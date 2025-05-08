@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scroll Animation Demo</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #000;
+    }
+    header {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: #fff;
+    }
+    header h1 {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+    section {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .parallax {
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      will-change: background-position;
+    }
+    .overlay-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      color: #fff;
+      font-size: 2rem;
+      opacity: 1;
+      text-align: center;
+      padding: 0 2rem;
+    }
+    .block {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .block--image-left {
+      flex-direction: row;
+    }
+    .block--image-right {
+      flex-direction: row-reverse;
+    }
+    .block__img, .block__media {
+      width: 50vw;
+      height: 100vh;
+      object-fit: cover;
+    }
+    .block__text {
+      width: 50vw;
+      padding: 2rem;
+      opacity: 1;
+      transition: opacity 0.6s ease;
+      font-size: 1.2rem;
+      color:white;
+    }
+    .fade-out {
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Community koli</h1>
+  </header>
+
+  <section class="parallax" data-speed="0.5" style="background-image: url('back.jpg');">
+    <div class="overlay-text">Overlay text 1</div>
+  </section>
+
+  <section class="block block--image-right">
+    <div class="block__text">Text block 2</div>
+    <img src="test.jpg" class="block__img" alt="Block 2 image">
+  </section>
+
+  <section class="parallax" data-speed="0.5" style="background-image: url('back.jpg');">
+    <div class="overlay-text">Overlay text 3</div>
+  </section>
+
+  <section class="block block--image-left">
+    <img src="test.jpg" class="block__img" alt="Block 4 image">
+    <div class="block__text">Text block 4</div>
+  </section>
+
+  <section class="parallax" data-speed="0.5" style="background-image: url('back.jpg');">
+    <div class="overlay-text">Overlay text 5</div>
+  </section>
+
+  <section class="block block--image-right">
+    <img src="test.jpg" class="block__img" alt="Block 6 image">
+    <div class="block__text">Text block 6</div>
+  </section>
+
+  <section class="parallax" data-speed="0.5" style="background-image: url('back.jpg');">
+    <div class="overlay-text">Overlay text 7</div>
+  </section>
+
+  <section class="block block--image-left">
+    <video autoplay muted loop playsinline class="block__media">
+      <source src="video8.mp4" type="video/mp4">
+    </video>
+    <div class="block__text">Text block 8</div>
+  </section>
+
+  <section class="parallax" data-speed="0.5" style="background-image: url('back.jpg');">
+    <div class="overlay-text">Overlay text 9</div>
+  </section>
+
+  <section class="block block--image-right">
+    <div class="block__text">Text block 10</div>
+    <img src="test.jpg" class="block__img" alt="Block 10 image">
+  </section>
+
+  <footer>
+    <h2>Footer Content</h2>
+  </footer>
+  <script>
+    // Fade-in/out observer
+    const options = { threshold: 0 };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        entry.target.classList.toggle('fade-out', !entry.isIntersecting);
+      });
+    }, options);
+    document.querySelectorAll('.overlay-text, .block__text').forEach(el => observer.observe(el));
+
+    // Parallax effect
+    const parallaxSections = document.querySelectorAll('.parallax');
+    function updateParallax() {
+      parallaxSections.forEach(section => {
+        const speed = parseFloat(section.dataset.speed) || 0.5;
+        const offset = section.getBoundingClientRect().top;
+        section.style.backgroundPositionY = `${offset * speed}px`;
+      });
+    }
+    window.addEventListener('scroll', () => requestAnimationFrame(updateParallax));
+    updateParallax();
+  </script>
+</body>
+</html>
