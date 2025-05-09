@@ -31,6 +31,14 @@
       background-position: center center;
       background-repeat: no-repeat;
       will-change: background-position;
+      position: relative;
+    }
+    .parallax video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
     }
     .overlay-text {
       position: absolute;
@@ -43,6 +51,8 @@
       opacity: 1;
       text-align: center;
       padding: 0 2rem;
+      z-index: 2;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     }
     .block {
       display: flex;
@@ -78,9 +88,10 @@
     <h1>Community koli</h1>
   </header>
 
-  <section class="parallax" data-speed="0.5" style="background-image: url('DSCF1400.mp4');">
-    <video autoplay muted loop playsinline class="block__media">
+  <section class="parallax" data-speed="0.5">
+    <video autoplay muted loop playsinline>
       <source src="DSCF1400.mp4" type="video/mp4">
+    </video>
     <div class="overlay-text">Overlay text 1</div>
   </section>
 
@@ -112,9 +123,11 @@
   </section>
 
   <section class="block block--image-left">
-    <video autoplay muted loop playsinline class="block__media">
-      <source src="video8.mp4" type="video/mp4">
-    </video>
+    <div class="block__media">
+      <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;">
+        <source src="video8.mp4" type="video/mp4">
+      </video>
+    </div>
     <div class="block__text">Text block 8</div>
   </section>
 
