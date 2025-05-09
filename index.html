@@ -209,8 +209,8 @@
 </head>
 <body>
   <!-- Background music (hidden) -->
-  <audio id="background-music" loop>
-    <source src="Common People - Pulp.mp3" type="audio/mp3">
+  <audio id="background-music" loop preload="auto">
+    <source src="Pulp Common People.mp3" type="audio/mp3">
     Your browser does not support the audio element.
   </audio>
 
@@ -322,15 +322,43 @@
       // Set initial volume
       bgMusic.volume = 0.5;
       
+      // Preload audio
+      bgMusic.load();
+      
       // Start playing when user interacts with the page (due to autoplay policies)
       document.body.addEventListener('click', function() {
         if (bgMusic.paused) {
+          // Play with user interaction (most browsers require this)
           bgMusic.play().catch(e => console.log('Audio playback failed:', e));
         }
       }, { once: true });
       
-      // Try to autoplay (may be blocked by browser)
-      bgMusic.play().catch(e => console.log('Autoplay prevented:', e));
+      // Try to autoplay (will likely be blocked by browser)
+      setTimeout(() => {
+        bgMusic.play().catch(e => {
+          console.log('Autoplay prevented:', e);
+          // Show a message to the user about enabling audio
+          const audioMessage = document.createElement('div');
+          audioMessage.textContent = 'Click anywhere to enable music';
+          audioMessage.style.position = 'fixed';
+          audioMessage.style.top = '10px';
+          audioMessage.style.left = '50%';
+          audioMessage.style.transform = 'translateX(-50%)';
+          audioMessage.style.background = 'rgba(0,0,0,0.7)';
+          audioMessage.style.color = 'white';
+          audioMessage.style.padding = '10px 20px';
+          audioMessage.style.borderRadius = '5px';
+          audioMessage.style.zIndex = '1000';
+          audioMessage.style.transition = 'opacity 1s ease';
+          document.body.appendChild(audioMessage);
+          
+          // Remove the message after 5 seconds
+          setTimeout(() => {
+            audioMessage.style.opacity = '0';
+            setTimeout(() => audioMessage.remove(), 1000);
+          }, 5000);
+        });
+      }, 1000);
       
       // Toggle music play/pause
       toggleButton.addEventListener('click', function() {
