@@ -81,9 +81,141 @@
     .fade-out {
       opacity: 0;
     }
+    .audio-controls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+    }
+    .audio-controls button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    .audio-controls .volume-slider {
+      width: 80px;
+    }
+    /* Footer Styles */
+    footer {
+      background-color: #111;
+      color: #fff;
+      padding: 40px 20px 20px;
+      margin-top: 0;
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    
+    .footer-section {
+      width: 23%;
+      min-width: 200px;
+      margin-bottom: 30px;
+    }
+    
+    .footer-section h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+    
+    .footer-section h4 {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+    
+    .footer-section p {
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+    
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .footer-section ul li {
+      margin-bottom: 8px;
+    }
+    
+    .footer-section a {
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .footer-section a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+    
+    .social-icons {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    
+    .social-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background-color: #333;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+    
+    .social-icon:hover {
+      background-color: #555;
+      transform: translateY(-3px);
+    }
+    
+    .footer-bottom {
+      border-top: 1px solid #333;
+      margin-top: 20px;
+      padding-top: 20px;
+      text-align: center;
+      font-size: 0.8rem;
+    }
+    
+    @media (max-width: 768px) {
+      .footer-section {
+        width: 48%;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .footer-section {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- Background music (hidden) -->
+  <audio id="background-music" loop>
+    <source src="Common People - Pulp.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+
+
   <header>
     <h1>Community koli</h1>
   </header>
@@ -141,9 +273,82 @@
   </section>
 
   <footer>
-    <h2>Footer Content</h2>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Community Koli</h3>
+        <p>A place for creativity, connection, and collaboration.</p>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Events</a></li>
+          <li><a href="#">Gallery</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Contact</h4>
+        <p>Email: info@communitykoli.com</p>
+        <p>Phone: +1 (555) 123-4567</p>
+        <p>Address: 123 Creative Lane, Arts District</p>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+        <div class="social-icons">
+          <a href="#" class="social-icon">FB</a>
+          <a href="#" class="social-icon">IG</a>
+          <a href="#" class="social-icon">TW</a>
+          <a href="#" class="social-icon">YT</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2024 Community Koli. All rights reserved.</p>
+    </div>
   </footer>
   <script>
+    // Background music control
+    document.addEventListener('DOMContentLoaded', function() {
+      const bgMusic = document.getElementById('background-music');
+      const toggleButton = document.getElementById('toggle-music');
+      const volumeControl = document.getElementById('volume-control');
+      
+      // Set initial volume
+      bgMusic.volume = 0.5;
+      
+      // Start playing when user interacts with the page (due to autoplay policies)
+      document.body.addEventListener('click', function() {
+        if (bgMusic.paused) {
+          bgMusic.play().catch(e => console.log('Audio playback failed:', e));
+        }
+      }, { once: true });
+      
+      // Try to autoplay (may be blocked by browser)
+      bgMusic.play().catch(e => console.log('Autoplay prevented:', e));
+      
+      // Toggle music play/pause
+      toggleButton.addEventListener('click', function() {
+        if (bgMusic.paused) {
+          bgMusic.play();
+          toggleButton.textContent = '🔊';
+        } else {
+          bgMusic.pause();
+          toggleButton.textContent = '🔇';
+        }
+      });
+      
+      // Volume control
+      volumeControl.addEventListener('input', function() {
+        bgMusic.volume = this.value;
+      });
+    });
+    
     // Fade-in/out observer
     const options = { threshold: 0 };
     const observer = new IntersectionObserver((entries) => {
